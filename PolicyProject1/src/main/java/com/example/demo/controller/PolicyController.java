@@ -1,33 +1,28 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.request.CreatePolicyRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.model.Policy;
 import com.example.demo.service.PolicyService;
 
 @RestController
-
-@RequestMapping("task")
-
-public class PolicyController 
+@RequestMapping("/policy")
+public class PolicyController
 {
 	@Autowired
-	PolicyService pol_ser;
-	
-	
-	@PostMapping(path = "/policy")
-//	@Consumes(MediaType.APPLICATION_JSON)
-	public String createPolicy(@RequestBody Policy policy)
+	PolicyService policyService;
+
+	@PostMapping(path = "/")
+	public ResponseEntity<String> createPolicy(@RequestBody CreatePolicyRequest createPolicyRequest)
 	{
-		pol_ser.savePolicy(policy);
-		
-		return "created sucessfully";
-		
+		Policy policy = policyService.create(createPolicyRequest);
+		return ResponseEntity.ok(policy.toString());
 	}
 
 }
